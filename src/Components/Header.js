@@ -7,6 +7,8 @@ import GoogleLogin from 'react-google-login';
 
 import '../Styles/header.css';
 
+const constants = require('../constants');
+const API_URL=constants.API_URL;
 
 const customStyles = {
     content: {

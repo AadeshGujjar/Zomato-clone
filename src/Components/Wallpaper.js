@@ -4,6 +4,10 @@ import axios from 'axios';
 import { withRouter } from 'react-router-dom';
 import '../Styles/wallpaper.css';
 
+
+const constants = require('../constants');
+const API_URL=constants.API_URL;
+
 class Wallpaper extends Component {
 
     constructor() {
