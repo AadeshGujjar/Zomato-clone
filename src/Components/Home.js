@@ -5,6 +5,9 @@ import axios from 'axios';
 import Wallpaper from './Wallpaper';
 import QuickSearches from './QuickSearches';
 
+const constants = require('../constants');
+const API_URL=constants.API_URL; 
+
 class Home extends Component {
 
     constructor() {
