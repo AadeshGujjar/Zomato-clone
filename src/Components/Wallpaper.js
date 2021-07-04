@@ -76,7 +76,7 @@ class Wallpaper extends Component {
                                     <div className="text-muted">
                                         Rating: {item.aggregate_rating}
                                         <span className="text-danger float-end">
-                                            Order Now >
+                                            Order Now -
                                         </span>
                                     </div>
                                 </div>

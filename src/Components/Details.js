@@ -11,7 +11,7 @@ import "../Styles/details.css";
 
 
 const constants = require('../constants');
-const API_URL=constants.API_URL;
+const API_URL=constants.API_URL; 
 
 const customStyles = {
     content: {
@@ -44,7 +44,7 @@ class Details extends Component {
         const { id } = qs;
 
         // make an API call to get the restaurant details for the given id
-        axios.get(`http://localhost:5402/api/getRestaurantById/${id}`)
+        axios.get(`${API_URL}/api/getRestaurantById/${id}`)
             .then(result => {
                 this.setState({
                     restaurant: result.data.restaurant[0]
@@ -54,7 +54,7 @@ class Details extends Component {
                 console.log(error); 
             });
         
-        axios.get(`http://localhost:5402/api/getMenuByRestaurant/${id}`)
+        axios.get(`${API_URL}/api/getMenuByRestaurant/${id}`)
             .then(result => {
                 this.setState({
                     menu: result.data.menu
@@ -85,7 +85,7 @@ class Details extends Component {
     }
 
     getCheckSum = (data) => {
-        return fetch('http://localhost:5402/api/payment', {
+        return fetch(`${API_URL}/api/payment`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -146,7 +146,7 @@ class Details extends Component {
         }
         axios({
             method: 'POST',
-            url: 'http://localhost:5402/api/saveOrderDetails',
+            url: `${API_URL}/api/saveOrderDetails`,
             header: { 'Content-Type': 'application/json' },
             data: obj
         }).then(result => {
