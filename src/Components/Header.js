@@ -190,7 +190,7 @@ class Header extends Component {
 
     }
 
-    responseSuccessGoogle = () => {
+     responseSuccessGoogle = () => {
 
     }
 
@@ -251,7 +251,7 @@ class Header extends Component {
                         <br/>
                         <br/>
                         <GoogleLogin 
-                            clientId="490588261118-3nlla25boblu4ugsvdsshbftq1iorsco.apps.googleusercontent.com"
+                            clientId="490588261118-r8rtrashnnqc6nvc6eih1aao9qurlflh.apps.googleusercontent.com"
                             buttonText="Continue with Google"
                             onSuccess={this.responseSuccessGoogle}
                             onFailure={this.responseFailureGoogle}
