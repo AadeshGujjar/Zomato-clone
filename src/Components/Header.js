@@ -105,8 +105,10 @@ class Header extends Component {
             header: { 'Content-Type': 'application/json' },
             data: obj
         }).then(result => {
+            debugger
             localStorage.setItem("user", JSON.stringify(result.data.user[0]));
             localStorage.setItem("isLoggedIn", true);
+            debugger
             this.setState({
                 user: result.data.user[0], 
                 isLoggedIn: true,
@@ -138,6 +140,7 @@ class Header extends Component {
             debugger
             localStorage.setItem("user", JSON.stringify(result.data.user));
             localStorage.setItem("isLoggedIn", true);
+            debugger
             this.setState({
                 user: result.data.user,
                 isLoggedIn: true,
@@ -186,15 +189,36 @@ class Header extends Component {
         this.props.history.push('/');
     }
 
-    faceBookLoginHandler = () => {
+    faceBookLoginHandler = (response) => {
+        debugger
+        console.log(response);
 
     }
 
-     responseSuccessGoogle = () => {
+     responseSuccessGoogle = (response) => {
+         debugger         
+         var user={
+             firstName:response.profileObj.givenName,
+             email: response.profileObj.email,
+
+         }
+        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("isLoggedIn", true);
+        debugger
+        
+        this.setState({
+            user: user,
+            isLoginModalOpen : false,
+            isSignUpModalOpen: false,
+            isLoggedIn: true,
+            loginError: undefined,
+                                    
+        });
 
     }
 
     responseFailureGoogle = () => {
+        alert(" Google Authentication Failed");
 
     }
 
@@ -270,7 +294,7 @@ class Header extends Component {
                     <h3>User Signup</h3>
                     <form>
                         {
-                            signUpError ? <div className="alert alert-danger">{signUpError}</div> : null
+                            signUpError ? <div className="alert alert-danger">{signUpError}</div> : null 
                         }
                         <label className="form-label">First Name:</label>
                         <input type="text" value={firstName} className="form-control" onChange={(event) => this.handleChange(event, 'firstName')} />
@@ -297,7 +321,7 @@ class Header extends Component {
                         <br/>
                         <br/>
                         <GoogleLogin 
-                            clientId=""
+                            clientId="490588261118-r8rtrashnnqc6nvc6eih1aao9qurlflh.apps.googleusercontent.com"
                             buttonText="Continue with Google"
                             onSuccess={this.responseSuccessGoogle}
                             onFailure={this.responseFailureGoogle}
