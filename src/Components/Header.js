@@ -191,13 +191,29 @@ class Header extends Component {
 
     faceBookLoginHandler = (response) => {
         debugger
-        console.log(response);
+        var user={
+            firstName:response.name,
+            email: response.email,
+
+        }
+        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("isLoggedIn", true);
+        debugger
+        
+        this.setState({
+            user: user,
+            isLoginModalOpen : false,
+            isSignUpModalOpen: false,
+            isLoggedIn: true,
+            loginError: undefined,
+                                    
+        });
 
     }
 
      responseSuccessGoogle = (response) => {
          debugger         
-         var user={
+        var user={
              firstName:response.profileObj.givenName,
              email: response.profileObj.email,
 
