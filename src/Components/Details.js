@@ -27,11 +27,14 @@ const customStyles = {
     }
 };
 
-        let User = localStorage.getItem('user')
-        var user= JSON.parse(User);
-        console.log(user.firstName);
-        console.log(typeof(user.firstName));
 
+        let User = localStorage.getItem('user')
+        if(User){       
+         var user= JSON.parse(User);
+        }
+        else{
+            alert("Please Login first ");
+        }
 
 class Details extends Component {
 
@@ -158,7 +161,7 @@ class Details extends Component {
             header: { 'Content-Type': 'application/json' },
             data: obj
         }).then(result => {
-            debugger
+           // debugger
             console.log(result);
         }).catch(error => {
             
@@ -168,7 +171,7 @@ class Details extends Component {
 
     //save order details in Using this method
     postTheInfo = (details) => {
-        debugger
+       // debugger
         
        // console.log(details.params.EMAIL);
         this.saveOrderDetails(user.email, user.firstName, details.params.MOBILE_NO, details.params.ORDER_ID, details.params.TXN_AMOUNT);
@@ -187,7 +190,7 @@ class Details extends Component {
         
         
         //console.log(user);
-        debugger
+       // debugger
         if(user==undefined){
             alert("Please Login First");
         }

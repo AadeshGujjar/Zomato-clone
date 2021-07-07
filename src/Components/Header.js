@@ -105,10 +105,10 @@ class Header extends Component {
             header: { 'Content-Type': 'application/json' },
             data: obj
         }).then(result => {
-            debugger
+         //   debugger
             localStorage.setItem("user", JSON.stringify(result.data.user[0]));
             localStorage.setItem("isLoggedIn", true);
-            debugger
+         //   debugger
             this.setState({
                 user: result.data.user[0], 
                 isLoggedIn: true,
@@ -137,10 +137,10 @@ class Header extends Component {
             header: { 'Content-Type': 'application/json' },
             data: obj
         }).then(result => {
-            debugger
+        //    debugger
             localStorage.setItem("user", JSON.stringify(result.data.user));
             localStorage.setItem("isLoggedIn", true);
-            debugger
+        //    debugger
             this.setState({
                 user: result.data.user,
                 isLoggedIn: true,
@@ -190,7 +190,7 @@ class Header extends Component {
     }
 
     faceBookLoginHandler = (response) => {
-        debugger
+       // debugger
         var user={
             firstName:response.name,
             email: response.email,
@@ -198,7 +198,7 @@ class Header extends Component {
         }
         localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("isLoggedIn", true);
-        debugger
+      //  debugger
         
         this.setState({
             user: user,
@@ -212,7 +212,7 @@ class Header extends Component {
     }
 
      responseSuccessGoogle = (response) => {
-        debugger         
+     //   debugger         
         var user={
              firstName:response.profileObj.givenName,
              email: response.profileObj.email,
@@ -220,7 +220,7 @@ class Header extends Component {
          }
         localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("isLoggedIn", true);
-        debugger
+      //  debugger
         
         this.setState({
             user: user,
