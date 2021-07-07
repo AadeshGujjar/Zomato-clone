@@ -212,7 +212,7 @@ class Header extends Component {
     }
 
      responseSuccessGoogle = (response) => {
-         debugger         
+        debugger         
         var user={
              firstName:response.profileObj.givenName,
              email: response.profileObj.email,

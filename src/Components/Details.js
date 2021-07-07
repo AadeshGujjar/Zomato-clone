@@ -10,6 +10,7 @@ import 'react-tabs/style/react-tabs.css';
 import "../Styles/details.css";
 
 
+
 const constants = require('../constants');
 const API_URL=constants.API_URL; 
 
@@ -25,6 +26,12 @@ const customStyles = {
         width: '550px'
     }
 };
+
+        let User = localStorage.getItem('user')
+        var user= JSON.parse(User);
+        console.log(user.firstName);
+        console.log(typeof(user.firstName));
+
 
 class Details extends Component {
 
@@ -134,11 +141,12 @@ class Details extends Component {
     }
     
 
-    saveOrderDetails(EMAIL, MOBILE_NO, ORDER_ID, TXN_AMOUNT) {
+    saveOrderDetails(email, name , MOBILE_NO, ORDER_ID, TXN_AMOUNT) {
         // call the API to login the user
         
         const obj = {
-            email: EMAIL,
+            email: email,
+            name: name,
             mobileNo: MOBILE_NO,
             orderId: ORDER_ID,
             txnAmount: TXN_AMOUNT,
@@ -161,9 +169,11 @@ class Details extends Component {
     //save order details in Using this method
     postTheInfo = (details) => {
         debugger
+        
+       // console.log(details.params.EMAIL);
+        this.saveOrderDetails(user.email, user.firstName, details.params.MOBILE_NO, details.params.ORDER_ID, details.params.TXN_AMOUNT);
 
-        console.log(details.params.EMAIL);
-        this.saveOrderDetails(details.params.EMAIL, details.params.MOBILE_NO, details.params.ORDER_ID, details.params.TXN_AMOUNT);
+
         const form = this.builfForm(details);
         document.body.appendChild(form);
         form.submit();
@@ -174,28 +184,41 @@ class Details extends Component {
         if (this.state.totalPrice == 0) {
             return;
         }
-        const data = {
-            amount: this.state.totalPrice,
-            email: 'abcd@gmail.com',
-            mobileNo: '9999999999'
-        };
-        //save transaction details through this--------->>>>
-        this.getCheckSum(data)
-            .then(result => {
-                //debugger
-                console.log('RESULT==== '+ result);
-                let information = {
-                    action: "https://securegw-stage.paytm.in/order/process", // URL of paytm server
-                    params: result //causing error from server
-                }
-                //console.log("Info : "+information);
-                //debugger
-                           
-                this.postTheInfo(information);
-            })
-            .catch(error => {
-                console.log(error);
-            });
+        
+        
+        //console.log(user);
+        debugger
+        if(user==undefined){
+            alert("Please Login First");
+        }
+        
+        else{
+            const data = {
+                
+                amount: this.state.totalPrice,
+                email: user.email,
+                name: user.firstName,
+                mobileNo: '9999999999',
+               
+            };
+            //save transaction details through this--------->>>>
+            this.getCheckSum(data)
+                .then(result => {
+                    //debugger
+                    //console.log('RESULT==== '+ result);
+                    let information = {
+                        action: "https://securegw-stage.paytm.in/order/process", // URL of paytm server
+                        params: result //causing error from server
+                    }
+                    //console.log("Info : "+information);
+                    //debugger
+                               
+                    this.postTheInfo(information);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
     }
 
     render() {
