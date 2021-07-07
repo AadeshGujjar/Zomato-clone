@@ -27,14 +27,9 @@ const customStyles = {
     }
 };
 
-
-        let User = localStorage.getItem('user')
-        if(User){       
-         var user= JSON.parse(User);
-        }
-        else{
-            alert("Please Login first ");
-        }
+let User, user; 
+debugger      
+    
 
 class Details extends Component {
 
@@ -44,7 +39,8 @@ class Details extends Component {
             restaurant: undefined,
             isMenuModalOpen: false,
             menu: [],
-            totalPrice: 0
+            totalPrice: 0,
+            User: localStorage.getItem('user'),
         };
     }
 
@@ -92,6 +88,23 @@ class Details extends Component {
         this.setState({
             totalPrice: totalPrice + item.itemPrice
         });
+    }
+    removeItemHnadler=(item)=>{
+        const { totalPrice } = this.state;
+        var price= totalPrice - item.itemPrice;
+        if(price>=0){
+
+            this.setState({
+                totalPrice: totalPrice - item.itemPrice
+            });
+        }
+        else{
+            this.setState({
+                totalPrice: 0
+            });
+
+        }
+        
     }
 
     getCheckSum = (data) => {
@@ -188,14 +201,15 @@ class Details extends Component {
             return;
         }
         
-        
         //console.log(user);
-       // debugger
-        if(user==undefined){
-            alert("Please Login First");
+        // debugger
+
+        if(User==undefined){
+            alert("Please Login First"); 
         }
         
         else{
+            user= JSON.parse(User);
             const data = {
                 
                 amount: this.state.totalPrice,
@@ -226,6 +240,10 @@ class Details extends Component {
 
     render() {
         const { restaurant, isMenuModalOpen, menu, totalPrice } = this.state;
+        User = localStorage.getItem('user')
+       // console.log(User)       
+        debugger
+        
         return (
             <div className="container py-5">
                 {
@@ -308,7 +326,8 @@ class Details extends Component {
                                                     <div className="cuisines item-desc text-muted">{ item.itemDescription }</div>
                                                 </div>
                                                 <div className="col-2">
-                                                    <button className="btn btn-light addButton" onClick={() => this.addItemHnadler(item)}>Add</button>
+                                                    <button className="addButton" onClick={() => this.addItemHnadler(item)}>+</button>
+                                                    <button className="removeButton" onClick={() => this.removeItemHnadler(item)}>-</button>
                                                 </div>
                                             </div>
                                         </li>

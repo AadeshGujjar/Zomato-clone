@@ -101,3 +101,50 @@
   right: 15px;
   top: 15px;
 }
+
+.closeBtn:hover {
+  background-color: rgb(128, 131, 134);
+  color: #FFFFFF;
+} 
+
+.addButton {
+  display: inline-block;
+    border-radius: 4px;
+    background-color: lightgreen;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    /* font-size: 28px; */
+    /* padding: 0px; */
+    width: 50px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+
+.addButton:hover {
+  padding-right: 2px;
+  background-color: green;
+}
+
+.removeButton {
+  display: inline-block;
+    border-radius: 4px;
+    background-color: rgb(238, 189, 144);
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    /* font-size: 28px; */
+    /* padding: 0px; */
+    width: 50px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+
+.removeButton:hover {
+  padding-right: 2px;
+  background-color: red;
+}
