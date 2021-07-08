@@ -27,11 +27,23 @@ const customStyles = {
     }
 };
 
-let User, user; 
-debugger      
-    
+let User, user,count=0; 
+// debugger      
+
+
+var menuDetails=[];
+let menuDetailsObject= {
+    restaurantName: undefined,
+    menuItem: {
+        itemName: undefined,
+        quantity: 0,
+    },
+
+}
+var quant=[];
 
 class Details extends Component {
+
 
     constructor() {
         super();
@@ -41,9 +53,11 @@ class Details extends Component {
             menu: [],
             totalPrice: 0,
             User: localStorage.getItem('user'),
+            quant: []
+            
         };
     }
-
+    
     componentDidMount() {
         // get the restaurant id from the query params
         const qs = queryString.parse(this.props.location.search);
@@ -54,23 +68,26 @@ class Details extends Component {
             .then(result => {
                 this.setState({
                     restaurant: result.data.restaurant[0]
+                    
                 });
-            })
+            }) 
             .catch(error => {
                 console.log(error); 
             });
-        
+           // debugger
         axios.get(`${API_URL}/api/getMenuByRestaurant/${id}`)
             .then(result => {
                 this.setState({
-                    menu: result.data.menu
+                    menu: result.data.menu,
+                    
                 });
             })
             .catch(error => {
                 console.log(error);
             });
+            
     }
-
+    
     openMenuHandler = () => {
         this.setState({
             isMenuModalOpen: true
@@ -78,32 +95,87 @@ class Details extends Component {
     }
 
     closeMenuHandler = () => {
+        menuDetails=[];
         this.setState({
-            isMenuModalOpen: false
+            isMenuModalOpen: false,
+            totalPrice: 0
         });
     }
 
-    addItemHnadler = (item) => {
+    
+     
+    addItemHnadler = (item,restaurant,index) => {
+        //debugger
+        var flag=0;
+        var ind=index;
+    
+        for(let i=0;i<menuDetails.length; i++){
+            if(menuDetails[i].menuItem.itemName===item.itemName)
+            {
+                menuDetails[i].menuItem.quantity+=1;
+                flag=1;
+                break
+            }
+        }
+        if(flag==0){
+            
+            menuDetailsObject= {
+                restaurantName: restaurant.name,
+                menuItem: {
+                    itemName: item.itemName,
+                    quantity: 1,
+                },               
+            }
+            menuDetails.push(menuDetailsObject);
+        }
+
+        debugger
         const { totalPrice } = this.state;
-        this.setState({
+        this.setState({   
             totalPrice: totalPrice + item.itemPrice
         });
+        debugger
     }
-    removeItemHnadler=(item)=>{
+    
+    removeItemHnadler=(item,index)=>{
         const { totalPrice } = this.state;
-        var price= totalPrice - item.itemPrice;
-        if(price>=0){
 
-            this.setState({
-                totalPrice: totalPrice - item.itemPrice
-            });
-        }
-        else{
-            this.setState({
-                totalPrice: 0
-            });
 
+        if(totalPrice>0){
+            for(let i=0;i<menuDetails.length; i++){
+                if(menuDetails[i].menuItem.itemName===item.itemName)
+                {
+                    
+                    if(menuDetails[i].menuItem.quantity>0){
+                        menuDetails[i].menuItem.quantity-=1;
+                        if(menuDetails[i].menuItem.quantity==0)
+                        {
+                            if(menuDetails.length==1)
+                            menuDetails=[];
+                            
+                            menuDetails.splice(i, i);
+                            //debugger
+                        }
+
+                        this.setState({
+                            totalPrice: totalPrice - item.itemPrice
+                        });
+                    }
+                    else{
+                        menuDetails.splice(i, i);
+                        this.setState({
+                            totalPrice: totalPrice -item.itemPrice
+                            
+                        });
+            
+                    }            
+                }
+            }
         }
+        //debugger
+
+
+        
         
     }
 
@@ -157,15 +229,16 @@ class Details extends Component {
     }
     
 
-    saveOrderDetails(email, name , MOBILE_NO, ORDER_ID, TXN_AMOUNT) {
+    saveOrderDetails(email, name , MOBILE_NO, ORDER_ID, TXN_AMOUNT, menuDetails) {
         // call the API to login the user
-        
+    
         const obj = {
             email: email,
             name: name,
             mobileNo: MOBILE_NO,
             orderId: ORDER_ID,
             txnAmount: TXN_AMOUNT,
+            menuDetails:menuDetails
             
         }
         axios({
@@ -174,7 +247,7 @@ class Details extends Component {
             header: { 'Content-Type': 'application/json' },
             data: obj
         }).then(result => {
-           // debugger
+          //  debugger
             console.log(result);
         }).catch(error => {
             
@@ -187,7 +260,7 @@ class Details extends Component {
        // debugger
         
        // console.log(details.params.EMAIL);
-        this.saveOrderDetails(user.email, user.firstName, details.params.MOBILE_NO, details.params.ORDER_ID, details.params.TXN_AMOUNT);
+        this.saveOrderDetails(user.email, user.firstName, details.params.MOBILE_NO, details.params.ORDER_ID, details.params.TXN_AMOUNT, menuDetails);
 
 
         const form = this.builfForm(details);
@@ -221,7 +294,7 @@ class Details extends Component {
             //save transaction details through this--------->>>>
             this.getCheckSum(data)
                 .then(result => {
-                    //debugger
+                  //  debugger
                     //console.log('RESULT==== '+ result);
                     let information = {
                         action: "https://securegw-stage.paytm.in/order/process", // URL of paytm server
@@ -241,8 +314,10 @@ class Details extends Component {
     render() {
         const { restaurant, isMenuModalOpen, menu, totalPrice } = this.state;
         User = localStorage.getItem('user')
+        
        // console.log(User)       
-        debugger
+      //  debugger
+
         
         return (
             <div className="container py-5">
@@ -311,6 +386,11 @@ class Details extends Component {
                             <ul className="menu">
                                 {
                                     menu.map((item, index) => {
+                                        for(let i=0;i<menu.length;i++){
+                                            quant[i]=0;
+                                        }
+                                      //  debugger
+
                                         return <li key={index}>
                                             <div className="row no-gutters menuItem">
                                                 <div className="col-10">
@@ -326,8 +406,9 @@ class Details extends Component {
                                                     <div className="cuisines item-desc text-muted">{ item.itemDescription }</div>
                                                 </div>
                                                 <div className="col-2">
-                                                    <button className="addButton" onClick={() => this.addItemHnadler(item)}>+</button>
-                                                    <button className="removeButton" onClick={() => this.removeItemHnadler(item)}>-</button>
+                                                    <button className="addButton" onClick={() => this.addItemHnadler(item,restaurant,index)}>+</button>  
+                                                                                                 
+                                                    <button className="removeButton" onClick={() => this.removeItemHnadler(item,index)}>-</button>
                                                 </div>
                                             </div>
                                         </li>

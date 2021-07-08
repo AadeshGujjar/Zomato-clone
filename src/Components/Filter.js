@@ -9,6 +9,7 @@ import '../Styles/Search.css';
 const constants = require('../constants');
 const API_URL=constants.API_URL;
 
+let noOFPages=0;
 
 class Filter extends Component {
 
@@ -107,9 +108,11 @@ class Filter extends Component {
             this.filterRestaurants();
         }, 0);
     }
+    
 
     handlePage(pageNo) {
-        if (pageNo < 1) return;
+        debugger
+        if (pageNo < 1 || pageNo>noOFPages) return;
         this.setState({
             pageNo: pageNo
         });
@@ -149,7 +152,7 @@ class Filter extends Component {
             
             let quotient = totalResults / pageSize;
             quotient = Math.floor(quotient);
-            let noOFPages = quotient;
+            noOFPages = quotient;
 
             const remainder = totalResults % pageSize;
             if (remainder > 0) {
@@ -176,6 +179,7 @@ class Filter extends Component {
     }
 
     goToDetails(item) {
+        debugger
         const url = `/details?id=${item._id}`;
         this.props.history.push(url);
     }
