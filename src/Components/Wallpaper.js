@@ -98,7 +98,7 @@ class Wallpaper extends Component {
                         e!
                     </div>
                     <div className="headerText">
-                        Find the best restaurants, cafés, and bars
+                        Atharv is a MORON!
                     </div>
                 </div>
                 <div className="locationOptions row">
